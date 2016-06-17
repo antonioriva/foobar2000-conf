@@ -1,0 +1,103 @@
+<MediaLibraryTree>
+	<SubTree label="Albums" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec type="object.container.album.musicAlbum">%album%[ '['%album artist%']']</spec>
+	</SubTree>
+	<SubTree label="Artists - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec type="object.container.person.musicArtist">%artist%</spec>
+		<spec type="object.container.album.musicAlbum">%album%[ '['%album artist%']']</spec>
+	</SubTree>
+	<SubTree label="Artists - Composer" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec type="object.container.person.musicArtist">%artist%</spec>
+		<spec type="object.container.person.musicArtist">%composer%</spec>
+	</SubTree>
+	<SubTree label="Album Artists - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec type="object.container.person.musicArtist">%album artist%</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]['['%date%']' ]%album%</spec>
+	</SubTree>
+	<SubTree label="Genres - Artist - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec type="object.container.genre.musicGenre">%&lt;genre&gt;%</spec>
+		<spec type="object.container.person.musicArtist">%album artist%</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	<SubTree label="Genres - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec type="object.container.genre.musicGenre">%&lt;genre&gt;%</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	<SubTree label="Composer - Artist - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec type="object.container.person.musicArtist">%composer%</spec>
+		<spec type="object.container.person.musicArtist">%album artist%</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	<SubTree label="Composer - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec type="object.container.person.musicArtist">%composer%</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	<SubTree label="Conductor - Orchestra - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec type="object.container.person.musicArtist">%conductor%</spec>
+		<spec type="object.container.person.musicArtist">%mixartist%</spec>
+		<spec type="object.container.album.musicAlbum">%album%</spec>
+	</SubTree>
+	<SubTree label="Conductor - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec type="object.container.person.musicArtist">%conductor%</spec>
+		<spec type="object.container.album.musicAlbum">%album%</spec>
+	</SubTree>
+	<SubTree label="Orchestra - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec type="object.container.person.musicArtist">%mixartist%</spec>
+		<spec type="object.container.album.musicAlbum">%album%</spec>
+	</SubTree>
+	<SubTree label="Rating - Genres - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec>$pad($repeat(★,%rating%), 5,✩)</spec>
+		<spec type="object.container.genre.musicGenre">%&lt;genre&gt;%</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	<SubTree label="Rating - Artist - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec>$pad($repeat(★,%rating%), 5,✩)</spec>
+		<spec type="object.container.person.musicArtist">%album artist%</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	<SubTree label="Rating - Composer - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec>$pad($repeat(★,%rating%), 5,✩)</spec>
+		<spec type="object.container.person.musicArtist">%composer%</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	<SubTree label="Rating - Conductor - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec>$pad($repeat(★,%rating%), 5,✩)</spec>
+		<spec type="object.container.person.musicArtist">%conductor%</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	<SubTree label="Rating - Orchestra - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec>$pad($repeat(★,%rating%), 5,✩)</spec>
+		<spec type="object.container.person.musicArtist">%mixartist%</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	<SubTree label="Rating - Album" query="NOT %path% HAS &quot;Download LossLess&quot;">
+		<spec>$pad($repeat(★,%rating%), 5,✩)</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	
+	
+	
+	<!--
+	<SubTree label="Years">
+		<spec>%date%</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	-->
+	
+	<!--
+	<SubTree label="Compilations" query="compilation PRESENT">
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	-->
+	
+	<!--
+	<SubTree label="Codecs">
+		<spec>%codec%</spec>
+		<spec type="object.container.album.musicAlbum">[%album artist% - ]%album%</spec>
+	</SubTree>
+	-->
+	
+	
+	<SubTree label="Download" type="filesystem" query="%path% HAS &quot;Download LossLess&quot;"/>
+	<SubTree label="Cartelle" type="filesystem"/>
+</MediaLibraryTree>
