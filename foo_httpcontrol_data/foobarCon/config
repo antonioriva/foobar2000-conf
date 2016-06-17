@@ -1,0 +1,11 @@
+; "foobarCon" configuration file
+[foo_httpcontrol]
+url=/
+playlist_row={"artist":"$replace(%artist%,\,\\,",\")","album":"$replace(%album%,\,\\,",\")","track":"$replace(%title%,\,\\,",\")","len":"%length%","filename":"$replace(%filename_ext%,\,\\,",\")","rating":"%rating%","last_played":"%last_played%","trackno":"%tracknumber%."}
+helper1={"artist":"$replace(%artist%,\,\\,",\")","title":"$replace(%title%,\,\\,",\")","album":"$replace(%album%,\,\\,",\")","time":"%playback_time%","len":"%length%","composer":"$replace(%composer%,\,\\,",\")"}
+
+playlist_items_per_page=80
+
+; please be sure to run foobarcon settings/clear caches after you change any albumart configs
+albumart_not_found=foobarCon/nocover_1.png
+albumart_not_available=foobarCon/nocover_1.png

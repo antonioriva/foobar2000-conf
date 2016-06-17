@@ -1,0 +1,16 @@
+﻿{
+"helper1":[HELPER1],
+"isPlaying":"[IS_PLAYING]",
+"isPaused":"[IS_PAUSED]",
+"elapsedTime":"[ITEM_PLAYING_POS]",
+"trackLength":"[ITEM_PLAYING_LEN]",
+"volume":"[VOLUME]",
+"volumedb":"[VOLUME_DB]",
+"order":"[PLAYBACK_ORDER]",
+"albumArt":"[ALBUMART]",
+"playlists":[PLAYLISTS_JS],
+"playlistActive":"[PLAYLIST_ACTIVE]",
+"playlistPlaying":"[PLAYLIST_PLAYING]",
+"playlistItemPlaying":"[PLAYLIST_ITEM_PLAYING]",
+"playlistTotalTime":"[PLAYLIST_TOTAL_TIME]"
+}
