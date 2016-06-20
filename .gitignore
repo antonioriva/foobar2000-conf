@@ -14,3 +14,8 @@
 /wavecache.db
 /wsh_data
 /playlists-v1.3
+/autobackup
+/version.txt
+/running
+/user-components/foo_foobarCon/albumart.db-shm
+/user-components/foo_foobarCon/albumart.db-wal
