@@ -194,16 +194,16 @@ Button.prototype.onClick = function () {
         onPlaylistsMenu(this.x, this.y + this.h);
         break;
     case "Repeat":
-        var pbo = fb.PlaybackOrder;
-        if (pbo == playbackOrder.Default) fb.PlaybackOrder = playbackOrder.RepeatPlaylist;
-        else if (pbo == playbackOrder.RepeatPlaylist) fb.PlaybackOrder = playbackOrder.RepeatTrack;
-        else if (pbo == playbackOrder.RepeatTrack) fb.PlaybackOrder = playbackOrder.Default;
-        else fb.PlaybackOrder = playbackOrder.RepeatPlaylist;
+        var pbo = plman.PlaybackOrder;
+        if (pbo == playbackOrder.Default) plman.PlaybackOrder = playbackOrder.RepeatPlaylist;
+        else if (pbo == playbackOrder.RepeatPlaylist) plman.PlaybackOrder = playbackOrder.RepeatTrack;
+        else if (pbo == playbackOrder.RepeatTrack) plman.PlaybackOrder = playbackOrder.Default;
+        else plman.PlaybackOrder = playbackOrder.RepeatPlaylist;
         break;
     case "Shuffle":
-        var pbo = fb.PlaybackOrder;
-        if (pbo != playbackOrder.ShuffleTracks) fb.PlaybackOrder = playbackOrder.ShuffleTracks;
-        else fb.PlaybackOrder = playbackOrder.Default;
+        var pbo = plman.PlaybackOrder;
+        if (pbo != playbackOrder.ShuffleTracks) plman.PlaybackOrder = playbackOrder.ShuffleTracks;
+        else plman.PlaybackOrder = playbackOrder.Default;
         break;
     case "Mute":
         fb.VolumeMute();
@@ -233,7 +233,7 @@ function getPlaybackOrder() {
 
     for (var i in playbackOrder) {
 
-        if (fb.PlaybackOrder == playbackOrder[i]) {
+        if (plman.PlaybackOrder == playbackOrder[i]) {
 
             order = i;
             break;
@@ -250,14 +250,14 @@ function onPlaylistsMenu(x, y) {
 
     mainMenuOpen = true;
     var lists = window.CreatePopupMenu();
-    var playlistCount = fb.PlaylistCount;
+    var playlistCount = plman.PlaylistCount;
     var playlistId = 3;
     lists.AppendMenuItem(MF_STRING, 1, "Playlist manager...");
     lists.AppendMenuSeparator();
     lists.AppendMenuItem(MF_STRING, 2, "Create New Playlist");
     lists.AppendMenuSeparator();
     for (var i = 0; i != playlistCount; i++) {
-        lists.AppendMenuItem(MF_STRING, playlistId + i, fb.GetPlaylistName(i).replace(/\&/g, "&&") + " [" + fb.PlaylistItemCount(i) + "]" + (fb.IsAutoPlaylist(i) ? " (Auto)" : "") + (i == plman.PlayingPlaylist ? " \t(Now Playing)" : ""));
+        lists.AppendMenuItem(MF_STRING, playlistId + i, plman.GetPlaylistName(i).replace(/\&/g, "&&") + " [" + plman.PlaylistItemCount(i) + "]" + (plman.IsAutoPlaylist(i) ? " (Auto)" : "") + (i == plman.PlayingPlaylist ? " \t(Now Playing)" : ""));
     }
 
     var id = lists.TrackPopupMenu(x, y);
@@ -267,13 +267,13 @@ function onPlaylistsMenu(x, y) {
         fb.RunMainMenuCommand("View/Playlist Manager");
         break;
     case 2:
-        fb.CreatePlaylist(playlistCount, "");
-        fb.ActivePlaylist = fb.PlaylistCount;
+        plman.CreatePlaylist(playlistCount, "");
+        plman.ActivePlaylist = plman.PlaylistCount;
         break;
 
     }
     for (var i = 0; i != playlistCount; i++) {
-        if (id == (playlistId + i)) fb.ActivePlaylist = i; // playlist switch
+        if (id == (playlistId + i)) plman.ActivePlaylist = i; // playlist switch
     }
     lists.Dispose();
     return true;

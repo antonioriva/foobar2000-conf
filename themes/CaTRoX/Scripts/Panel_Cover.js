@@ -324,12 +324,12 @@ function on_playlist_items_added(playlist) {
 
 function on_playlist_items_removed(playlist, new_count) {
 
-    if (playlist == fb.ActivePlaylist && !new_count) {
+    if (playlist == plman.ActivePlaylist && !new_count) {
 
         !fb.IsPlaying && nullArt();
         return;
     }
-    if ((fb.IsPlaying && displayedTrack != display.selected) || (playlist != fb.ActivePlaylist)) return;
+    if ((fb.IsPlaying && displayedTrack != display.selected) || (playlist != plman.ActivePlaylist)) return;
 
 
     getAlbumArt(selectedItem());
@@ -493,7 +493,7 @@ function reload() {
 
     oldAlbum = currentAlbum = undefined;
 
-    if (!fb.PlaylistItemCount(fb.ActivePlaylist)) nullArt();
+    if (!plman.PlaylistItemCount(plman.ActivePlaylist)) nullArt();
     else getAlbumArt(displayedTrack == display.selected ? fb.GetFocusItem() : (fb.IsPlaying ? fb.GetNowPlaying() : fb.GetFocusItem()));
 
 

@@ -114,12 +114,12 @@ function on_size() {
     var p = 9;
     var x = volX - gap + 2;
 
-    if (fb.PlaybackOrder == playbackOrder.RepeatPlaylist) img = btnImg.RepeatPlaylist;
-    else if (fb.PlaybackOrder == playbackOrder.RepeatTrack) img = btnImg.Repeat1;
+    if (plman.PlaybackOrder == playbackOrder.RepeatPlaylist) img = btnImg.RepeatPlaylist;
+    else if (plman.PlaybackOrder == playbackOrder.RepeatTrack) img = btnImg.Repeat1;
     else img = btnImg.Repeat;
 
     b[0] = new Button(x, y, w, h, "Repeat", img);
-    b[1] = new Button(x + w + p, y, btnImg.Shuffle[0].Width, h, "Shuffle", (fb.PlaybackOrder == playbackOrder.ShuffleTracks) ? btnImg.ShuffleTracks : btnImg.Shuffle);
+    b[1] = new Button(x + w + p, y, btnImg.Shuffle[0].Width, h, "Shuffle", (plman.PlaybackOrder == playbackOrder.ShuffleTracks) ? btnImg.ShuffleTracks : btnImg.Shuffle);
     b[2] = new Button(ww - 30, y, w, h, "Mute", fb.Volume == -100 ? btnImg.Muted : btnImg.Mute);
 
 }
