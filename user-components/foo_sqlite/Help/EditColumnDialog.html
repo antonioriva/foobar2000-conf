@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html><html  xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta  charset="UTF-8" />
+    <title>SQLite Viewer - Edit column dialog</title>
+  </head>
+  <body>
+    <h4  style="text-decoration: underline;"> SQLite Viewer - Edit column dialog</h4>
+    <img  src="png/EditColumn.png" /> <br />
+    <br />
+    <table  border="0"  style="width: 100%;">
+      <tbody>
+        <tr>
+          <td  style="width: 150pt; font-weight: bold;"> <a  id="column_type">Type:</a>
+          </td>
+          <td>The colum types below are available in this dialog. They are
+            mapped to more detailed column types in the database.<br />
+            <br />
+            <div  style="margin-left: 40px;">
+              <table  border="0">
+                <tbody>
+                  <tr>
+                    <td  style="font-style: italic; width: 100pt;">Tag <br />
+                    </td>
+                    <td>Any tag, which is present in the foobar2000 media
+                      library or in the playlist can be used here. <br />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td  style="width: 100pt; font-style: italic;">TechInfo <br />
+                    </td>
+                    <td>Any technical info field, which is provided by
+                      foobar2000 can be used here. <br />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td  style="font-style: italic;">Predefined <br />
+                    </td>
+                    <td>Several predefined fields are available<br />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td  style="font-style: italic;">TFExpression <br />
+                    </td>
+                    <td>Any arbitraty title format expression can be defined
+                      here. The following predeifned values are available:
+                      %artist%, %album artist%, %title%, %track artist%. <br />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <br />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td  style="width: 150pt; font-weight: bold;">Name: </td>
+          <td>Define the Name of the column. Dependent on the column type either
+            a predefined value needs to be selected or an arbitrary name can be
+            entered.</td>
+        </tr>
+        <tr>
+          <td  style="width: 150pt; font-weight: bold;">Collation: </td>
+          <td>Define the default collation of the column. Besides the custom
+            collation NaturalNoCase also the standard SQLite collations Binary,
+            NoCase and RTrim are available.</td>
+        </tr>
+        <tr>
+          <td  style="vertical-align: top;"><span  style="font-weight: bold;">Name
+              (Tag):</span><br />
+          </td>
+          <td  style="vertical-align: top;">Define the name of the tag, which is
+            assigned to the column. If it is empty, the column name will be
+            used.Only available vor columns with the type tag.</td>
+        </tr>
+        <tr>
+          <td  style="width: 150pt; font-weight: bold;">Multivalue separator
+            (Tag): </td>
+          <td>Define the separator, which is used for concantenating multiple
+            values in columns with the type Tag.</td>
+        </tr>
+        <tr>
+          <td  style="vertical-align: top;"><span  style="font-weight: bold;"><a
+                 name="split_multivalue_tag">Split multivalue tag</a> (Tag):</span><br />
+          </td>
+          <td  style="vertical-align: top;">If checked, multivalue tags will be
+            splitted and for each value a separate row will be added to a query
+            of the MediaLibrary or Playlist table. Only available for columns
+            with the type tag.<br />
+          </td>
+        </tr>
+        <tr>
+          <td  style="vertical-align: top;"><span  style="font-weight: bold;">Associated
+
+
+              column (Tag):</span><br />
+          </td>
+          <td  style="vertical-align: top;">Define an associated column for the
+            current column. This attribute is only available, if "split
+            multivalue tag" is selected and the associated column should also
+            have this attributes selected to get meaningful results. Each value
+            of the current column is the value of the associated column at the
+            same position assigned. To get not only &lt;null&gt; values for the
+            current column the associated column needs to appear either in the
+            select list or in the where clause. <br />
+            <br />
+            For example a track has two multivalue tags, each with two values
+            in:<br />
+            <br />
+            ARTIST=Motörhead; Britney Spears<br />
+            ARTIST_SORT=MOTORHEAD; SPEARS, BRITNEY<br />
+            <br />
+            Without defining an associated column a query, which contains this
+            track will have four rows in its result:<br />
+            <br />
+            <table  border="0"  style="width: 619px; height: 134px;">
+              <tbody>
+                <tr>
+                  <td><span  style="font-weight: bold;">ARTIST</span><br />
+                  </td>
+                  <td  style="font-weight: bold;">ARTIST_SORT<br />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Motörhead<br />
+                  </td>
+                  <td>MOTORHEAD<br />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Motörhead</td>
+                  <td>SPEARS, BRITNEY<br />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Britney Spears<br />
+                  </td>
+                  <td>MOTORHEAD</td>
+                </tr>
+                <tr>
+                  <td>Britney Spears</td>
+                  <td>SPEARS, BRITNEY</td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
+            This result is probably not wanted. Defining ARTIST as associated
+            column for ARTIST_SORT will lead to the desired result with only two
+            rows:<br />
+            <br />
+            <table  border="0"  style="width: 619px; height: 82px;">
+              <tbody>
+                <tr>
+                  <td><span  style="font-weight: bold;">ARTIST</span></td>
+                  <td  style="font-weight: bold;">ARTIST_SORT</td>
+                </tr>
+                <tr>
+                  <td>Motörhead</td>
+                  <td>MOTORHEAD</td>
+                </tr>
+                <tr>
+                  <td>Britney Spears</td>
+                  <td>SPEARS, BRITNEY</td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
+            <br />
+          </td>
+        </tr>
+        <tr>
+          <td  style="width: 150pt; font-weight: bold;">Title format expression:
+          </td>
+          <td>Define the title format expression for columns with the type
+            TFExpression.</td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+    <span  style="font-weight: bold;"  checked="true"> </span>
+  </body>
+</html>

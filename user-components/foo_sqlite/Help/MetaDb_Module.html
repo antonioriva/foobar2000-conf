@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html><html  xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta  charset="UTF-8" />
+    <title>SQLite Viewer - MetaDb_Module</title>
+    <style  type="text/css">
+#DML_usage_warning {
+  color: red;
+}
+</style></head>
+  <body>
+    <h4  style="text-decoration: underline;">SQLite Viewer -
+      MetaDb_Module</h4>
+    The module MetaDb_Module implements the virtual tables MediaLibrary and
+    Playlist. The virtual table will be created with <span  style="font-style: italic;">CREATE
+
+
+
+
+      VIRTUAL TABLE &lt;TableName&gt; USING MetaDB_Module([parameter,...]);</span><br />
+    <br />
+    The module accepts the following optional parameters:<br />
+    <br />
+    <table  border="0"  style="width: 100%;">
+      <tbody>
+        <tr>
+          <td  style="vertical-align: top;"><span  style="font-weight: bold;">add_defaults</span></td>
+          <td  style="vertical-align: top;">Specify, that all missing tags will
+            be added to the <a  href="PreferencesDialog.html">table definition</a>
+            before the creation of the virtual table<br />
+          </td>
+        </tr>
+        <tr>
+          <td  style="width: 250pt;"><span  style="font-weight: bold;">no_multivalue_split</span>
+          </td>
+          <td> <span  style="font-weight: bold;"></span>Virtual tables, which
+            are created with this parameter ignore the attribute <a  href="EditColumnDialog.html#split_multivalue_tag">split
+              multivalue tag</a> completely<br />
+          </td>
+        </tr>
+        <tr>
+          <td  style="vertical-align: top;"><span  style="font-weight: bold;">medialibrary</span><br />
+          </td>
+          <td  style="vertical-align: top;">Specify, that the virtual table
+            implements access to the media library. This parameter is the
+            default and can be omitted.<br />
+          </td>
+        </tr>
+        <tr>
+          <td  style="vertical-align: top;"><span  style="font-weight: bold;">playlist</span><br />
+          </td>
+          <td  style="vertical-align: top;">Specify, that the virtual table
+            implements access to the playlists. It can only be omitted for
+            accessing the playlists, if the table name is the same as the
+            parameter name<br />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+    <h4><a  id="automatic_index">Automatic index</a></h4>
+    For all fields of the types <a  href="EditColumnDialog.html#column_type">Tag,
+      TechInfo and TFExpression</a> and for the predefined Playlist fields
+    playlist_name, playlist_index and playlist_item an automatic index will be
+    used in a query, if these fields are not part of an expression and if they
+    are used with the operators =, &lt;, &lt;=, &gt; or &gt;=, e.g. for <span  style="font-style: italic;">artist='Genesis'</span>
+    such an automatic index will be used. This will decrease the query time
+    related to the relevant field in many cases up to 50%.<br />
+    <br />
+    In some cases the query time might increase. Here the use of the automatic
+    index can be disabled by adding an empty string to a the relevant field,
+    e.g. <span  style="font-style: italic;">artist||''='Genesis'</span>.
+    <h4>DML support</h4>
+    <span  style="font-weight: bold;"  id="DML_usage_warning">!!! Caution: Use
+      the functionality described below with care. If used wrongly you can
+      destroy your tags and/or your playlists. !!!</span><br />
+    <br />
+    For the virtual tables of the types medialibrary and playlist UPDATE
+    operations are supported. It requires, that the relevant virtual table is
+    created with the parameter <span  style="font-style: italic;">no_multivalue_split</span>,
+    like this:<br />
+    <br />
+    <span  style="font-style: italic;">CREATE VIRTUAL TABLE
+      MediaLibrary_Updatable USING MetaDB_Module(no_multivalue_split)</span>;<br />
+    <span  style="font-style: italic;">CREATE VIRTUAL TABLE Playlist_Updatable
+      USING MetaDB_Module(no_multivalue_split,playlist)</span>;<br />
+    <br />
+    These virtual tables should be created in addition to the standard virtual
+    tables. The UPDATE statement on such a table will only prepare the update of
+    the tags. The actual update will be done with committing the changes. This
+    means reverting changes with a rollback is not possible.<br />
+    <br />
+    For the virtual table of the type playlist also DELETE and INSERT operations
+    are supported. As for the UPDATE operations, the affected virtual tables
+    needs be created with the parameter <span  style="font-style: italic;">no_multivalue_split</span>.<br />
+    <br />
+    Deleting entries from the Playlist table will result in removing items from
+    the relevant playlists. For example, the statement <span  style="font-style: italic;">DELETE
+      FROM Playlist_Updatable WHERE artist='Michael Jackson'</span> will delete
+    the items where the artist is "Michael Jackson" from all playlists, which
+    have such items.<br />
+    <br />
+    Inserting entries into the Playlist table will result in adding items to the
+    relevant playlists. Only the columns <span  style="font-style: italic;">metadb_handle</span>,
+    <span  style="font-style: italic;">playlist_index</span> and <span  style="font-style: italic;">playlist_name</span>
+    will be considered for the INSERT statement. All other columns will be
+    ignored. The column <span  style="font-style: italic;">metadb_handle</span>
+    is mandatory, the column <span  style="font-style: italic;">playlist_name</span>
+    will be ignored, if the column <span  style="font-style: italic;">playlist_index</span>
+    is present. If neither <span  style="font-style: italic;">playlist_index</span>
+    nor <span  style="font-style: italic;">playlist_name</span> is used the
+    target playlist will be "SQL Tree playlist". Some examples:<br />
+    <br />
+    <span  style="text-decoration: underline;">Adding all songs from "Metallica"
+      to each playlist:</span><br />
+    <br />
+    INSERT INTO Playlist_Updatable(metadb_handle)<br />
+    SELECT metadb_handle<br />
+    FROM MediaLibrary<br />
+    WHERE artist='Metallica'<br />
+    <br />
+    <span  style="text-decoration: underline;"> Adding all songs from
+      "Metallica" to the playlists "Metallica" and "Heavy Metal"</span><br />
+    <br />
+    INSERT INTO Playlist_Updatable(metadb_handle,playlist_name)<br />
+    SELECT a.metadb_handle,b.playlist_name<br />
+    FROM MediaLibrary a, (SELECT 'Metallica' "playlist_name" UNION ALL SELECT
+    'Heavy Metal') b<br />
+    WHERE artist='Metallica'<br />
+    <br />
+    As for updating tags, changing the playlists in that way will take effect
+    with committing the changes. Reverting these changes can be done
+    playlist-wise with the standard Undo from the Edit menu.<br />
+    <br />
+    <br />
+  </body>
+</html>
