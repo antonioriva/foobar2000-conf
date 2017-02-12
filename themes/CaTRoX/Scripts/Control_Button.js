@@ -148,6 +148,26 @@ Button.prototype.onClick = function () {
     case "Play/Pause":
         fb.PlayOrPause();
         break;
+    case "Play Playlist":
+        var handle = fb.GetSelections() ;
+        var plIdx = -1 ;
+        for (var i=0; i<plman.PlaylistCount; i++) {
+            if ( plman.GetPlaylistName(i) == "Play Selection") {
+                plIdx = i ;
+                plman.ActivePlaylist = plIdx ;
+            }
+        }
+        if ( plIdx<0) {
+            plIdx = plman.CreatePlaylist(plman.PlaylistCount, "Play Selection") 
+        }
+        
+        plman.ActivePlaylist = plIdx ;
+        plman.ClearPlaylist(plIdx) ;
+        plman.InsertPlaylistItems(plIdx, plman.PlaylistItemCount(plIdx), handle) ;
+        fb.Stop();
+        plman.PlayingPlaylist = plIdx ;
+        fb.Play();
+        break;
     case "Next":
         fb.Next();
         break;

@@ -1,4 +1,4 @@
-﻿/*
+/*
 you can use fb.trace(something) to output variables/strings/properties to the Console
 and it will be used in some examples below.
 any parameters in [] are optional and may be omitted.
@@ -87,7 +87,7 @@ interface IFbUtils {
 		fb.CreateContextMenuManager(); (IContextMenuManager)
 
 			interface IContextMenuManager {
-				// see samples\MainMenuManager All-In-One, samples\Menu Sample.txt
+				// see samples\basic\MainMenuManager All-In-One, samples\basic\Menu Sample.txt
 
 				Methods:
 					BuildMenu(IMenuObj, base_id, max_id); (void)
@@ -104,7 +104,7 @@ interface IFbUtils {
 		fb.CreateMainMenuManager(); (IMainMenuManager)
 
 			interface IMainMenuManager {
-				// see samples\MainMenuManager All-In-One, samples\Menu Sample.txt
+				// see samples\basic\MainMenuManager All-In-One, samples\basic\Menu Sample.txt
 
 				Methods:
 					BuildMenu(IMenuObj, base_id, count); (void)
@@ -293,7 +293,7 @@ interface IGdiUtils {
 
 		gdi.CreateStyleTextRender([pngmode]); (IStyleTextRender)
 		// pngmode: boolean, default false.
-		// see samples\Glow Text Sample.txt
+		// see samples\basic\Glow Text Sample.txt
 
 			interface IStyleTextRender {
 				Methods:
@@ -333,7 +333,7 @@ interface IGdiUtils {
 		// note that you must escape backslashes whenever they are in quotes.
 
 		gdi.LoadImageAsync(window_id, path); (uint)
-		// returns a unqiue id. see samples\LoadImageAsync.txt
+		// returns a unqiue id. see samples\basic\LoadImageAsync.txt
 }
 
 interface IFbPlaylistManager {
@@ -355,7 +355,7 @@ interface IFbPlaylistManager {
 		4 Shuffle (tracks)
 		5 Shuffle (albums)
 		6 Shuffle (folders)
-		see samples\PBOButton(Menu).txt.
+		see samples\basic\PBOButton(Menu).txt.
 		*/
 
 		plman.PlayingPlaylist; (uint) (read, write)
@@ -483,6 +483,16 @@ interface IFbPlaylistManager {
 		plman.IsPlaylistItemSelected(playlistIndex, itemIndex); (boolean)
 		// returns true/false
 
+		plman.IsPlaylistLocked(playlistIndex); (boolean)
+		/* Note: this returns true if the playlist is an autoplaylist.
+		To determine if a playlist is not an autoplaylist but locked with something like foo_utils or
+		foo_playlist_attributes, do something like...
+
+		if (!plman.IsAutoPlaylist(plman.ActivePlaylist) && plman.IsPlaylistLocked(plman.ActivePlaylist)) {
+			blah();
+		}
+		*/
+
 		plman.MovePlaylist(from, to); (boolean)
 
 		plman.MovePlaylistSelection(playlistIndex, delta); (void)
@@ -563,7 +573,6 @@ interface IFbPlaylistManager {
 		// usable from the Edit menu.
 
 	Queue Methods:
-
 		plman.AddItemToPlaybackQueue(handle); (void)
 
 		plman.AddPlaylistItemToPlaybackQueue(playlistIndex, playlistItemIndex); (void)
@@ -602,6 +611,23 @@ interface IFbPlaylistManager {
 }
 
 interface IJSUtils {
+	Properties:
+		utils.Version (uint) (read)
+		/* new in v1.2.0. returns a 4 digit number corresponding to the version
+		
+		v1.2.0 -> 1200
+		v1.2.1 -> 1210
+		
+		If you try and access this in older components where it doesn't exist, the script will
+		crash so you can do a check like this.
+		
+		if (!("Version" in utils)) {
+			fb.ShowPopupMessage("Current component version is less than v1.2.0. This script requires vX.X.X");
+		} else {
+			//check the actual version
+		}
+		*/
+
 	Methods:
 		utils.CheckComponent(name[, is_dll]); (boolean)
 		// is_dll: boolean, default false. if true, method checks filename as well as the internal name.
@@ -642,7 +668,7 @@ interface IJSUtils {
 		need_stub: boolean, default true
 		only_embed: boolean, default false
 		no_load: boolean, default false. if true, "image" parameter will be null in on_get_album_art_done callback.
-		see samples\GetAlbumArtAsync.txt
+		see samples\basic\GetAlbumArtAsync.txt
 		*/
 
 		utils.GetAlbumArtEmbedded(rawpath[, art_id]); (IGdiBitmap)
@@ -653,7 +679,7 @@ interface IJSUtils {
 		/*
 		art_id: default 0. see flags.txt > AlbumArtId
 		need stub: boolean, default true.
-		see samples\GetAlbumArtV2.txt
+		see samples\basic\GetAlbumArtV2.txt
 		*/
 
 		utils.GetSysColor(index); (uint)
@@ -740,12 +766,12 @@ interface IFbWindow {
 		window.ClearInterval(timerID); (void)
 		window.SetInterval(func, delay); (uint)
 		window.SetTimeout(func, delay); (uint)
-		// for the previous 4 methods, see samples\timers.txt
+		// for the previous 4 methods, see samples\basic\timers.txt
 
 		window.CreatePopupMenu(); (IMenuObj)
 
 			interface IMenuObj {
-				// see samples\MainMenuManager All-In-One, samples\Menu Sample.txt
+				// see samples\basic\MainMenuManager All-In-One, samples\basic\Menu Sample.txt
 
 				Properties:
 					ID; (uint) (read)
@@ -779,10 +805,10 @@ interface IFbWindow {
 
 		window.CreateThemeManager(class_list); (IThemeManager)
 		// class_list: http://msdn.microsoft.com/en-us/library/bb773210%28VS.85%29.aspx
-		// see samples\SimpleThemedButton.txt, samples\Themed Seek Bar.txt
+		// see samples\basic\SimpleThemedButton.txt, samples\basic\Themed Seek Bar.txt
 
 			interface IThemeManager {
-				// see samples\SimpleThemedButton, samples\Themed Seekbar.txt
+				// see samples\basic\SimpleThemedButton, samples\basic\Themed Seekbar.txt
 
 				Methods:
 					DrawThemeBackground(IGdiGraphics, x, y, w, h[, clip_x][, clip_y][, clip_w][, clip_h]); (void)
@@ -880,12 +906,7 @@ interface IFbWindow {
 
 		window.RepaintRect(x, y, w, h[, force]); (void)
 		/*
-		x, y, w, h must be an integer, 0 or above. 
 		force: boolean, default false
-		
-		if you cannot be sure of calculated x, y values, do
-		something like this...
-		window.RepaintRect(Math.max(0, x), Math.max(0, y), w, h);
 
 		use this instead of window.Repaint on frequently updated areas
 		such as time, bitrate, seekbar, etc. this should reduce CPU usage.
@@ -893,7 +914,12 @@ interface IFbWindow {
 		*/
 
 		window.SetCursor(id); (void)
-		// id: see flags.txt > Used in window.SetCursor()
+		/*
+		this would usually be used inside the on_mouse_move callback
+		
+		id: see flags.txt > Used in window.SetCursor()
+		use -1 if you want to hide the cursor.
+		*/
 
 		window.GetProperty(name[, defaultval]); (VARIANT)
 		// get value of name from properties.
@@ -941,9 +967,10 @@ interface IGdiFont {
 
 interface IGdiBitmap {
 	/*
-	example1: samples\Apply Mask.txt
-	example2: samples\Box Blur.txt
-	example3: samples\Glow Text Sample.txt
+	example1: samples\basic\Apply Mask.txt
+	example2: samples\basic\BoxBlur.txt
+	example3: samples\basic\Glow Text Sample.txt
+	example4: samples\basic\StackBlur.txt
 	*/
 
 	Properties:
@@ -958,7 +985,8 @@ interface IGdiBitmap {
 		// Changes will be saved in the current bitmap
 
 		BoxBlur(radius[, iteration]); (void)
-		// iteration: default 1.
+		// radius: valid values 1-20
+		// iteration: default 1. valid values 1-20
 
 		Clone(x, y, w, h); (IGdiBitmap)
 
@@ -1005,6 +1033,9 @@ interface IGdiBitmap {
 		if (img)
 			img.SaveAs("D:\\export.jpg", "image/jpeg");
 		*/
+
+		StackBlur(radius); (void)
+		// radius: valid values 2-254
 }
 
 interface IGdiGraphics {
@@ -1152,7 +1183,7 @@ interface IFbMetadbHandle {
 
 		SubSong; (int) (read)
 
-		FileSize; (double) (read)
+		FileSize; (LONGLONG) (read) // requires IE9 or later
 
 		Length; (double) (read)
 
@@ -1269,7 +1300,7 @@ interface IFbMetadbHandleList {
 		// returns total in seconds.
 		// consider using utils.FormatDuration() on the result.
 
-		CalcTotalSize(); (double)
+		CalcTotalSize(); (LONGLONG) // requires IE9 or later
 		// return total in bytes.
 		// consider using utils.FormatFileSize() on the result.
 
@@ -1346,7 +1377,7 @@ interface IFbMetadbHandleList {
 }
 
 interface IDropTargetAction {
-	// see samples\Drag Drop Basic.txt
+	// see samples\basic\Drag Drop Basic.txt
 
 	Properties:
 		Parsable; (boolean) (read, write)

@@ -1,3 +1,60 @@
+v1.2.0
+ADD: If your computer has IE9 or later installed, newer ECMAScript5 features
+     are now available. Many thanks to TheQwertiest for discovering how to do this.
+CHG: The "Script engine" option has been removed from the "Configuration" window.
+     The newer Chakra engine is always used if available but will fall back to
+     JScript if not.
+ADD: utils.version reports the component version. See docs\interfaces.txt.
+CHG: Minor tweaks to Configuration window.
+FIX: Update jsplaylist-mod so it works with Chakra engine. Thanks to zeremy
+     for reporting
+FIX: A previous window.RepaintRect bug reported by Wilb has now been fixed.
+FIX: Zap a few more compiler warnings.
+
+v1.1.7
+- FIX: Remove trailing space in "Console" when using fb.Trace.
+- FIX: Text Reader sample. Ensure "Open containing folder" works when specifiying
+       a folder rather than a full path to a file.
+- FIX: Thumbs sample. Fix issue where using %profile% in the "Custom folder"
+       setting would fail if the profile path contained special title formatting
+       characters like %()[]'
+- CHG: Remove "Delay load" from "Configuration" window.
+
+v1.1.6.2
+- FIX: plman.AddLocations: Original order of files in array is now maintained.
+- CHG: plman.AddLocations: Progress dialog stays hidden for short operations.
+
+v1.1.6.1
+- CHG: Minor changes to Console logging on startup.
+- ADD: The "complete" samples folder has 2 new scripts: "thumbs.txt" and "text reader.txt".
+       Thumbs allows the display/cycling of multiple images in a given folder. Text reader
+       displays the contents of any plain text file. Title formatting can be used to specify
+       the folder/file paths.
+
+v1.1.6
+- ADD: IGdiBitmap StackBlur method. See docs\interfaces.txt and
+       samples\basic\StackBlur.txt.
+- CHG: Update ApplyMask sample.
+
+v1.1.5.1
+- ADD: Add "Open component folder" to default right click menu.
+       This provides quick access to the docs and samples.
+
+
+v1.1.5
+- ADD: plman.IsPlaylistLocked(playlistIndex). See docs\interfaces.txt.
+- ADD: on_playlists_changed is now called when a playlist's lock
+       status changes through the use of components such as foo_utils or
+       foo_playlist_attributes. See docs\callbacks.txt
+- CHG: Existing samples moved in to new "basic" subfolder.
+- ADD: Add new "complete" samples folder containing some more feature complete
+       samples.
+- ADD: Add "jsplaylist-mod". Since Br3tt's excellent JSplaylist doesn't work
+       with JScript Panel, this updated "mod" version has been created.
+
+v1.1.4.1
+- FIX: Prevent old tooltips lingering after script error.
+
 v1.1.4
 - FIX: main preferences keyboard shortcuts were never processed in columns UI
        when JScript Panel had focus. More details here:
@@ -10,7 +67,7 @@ v1.1.2
 - FIX: Fix on_mouse_wheel not being called with certain trackpads.
 
 v1.1.1
-- ADD: New "on_mouse_wheel_h" callback for left/right scrolling. See callbacks.txt.
+- ADD: New "on_mouse_wheel_h" callback for left/right scrolling. See docs\callbacks.txt.
 
 v1.1.0
 - CHG: GetQueryItems should be a "fb" method, not "plman".
@@ -94,7 +151,7 @@ v1.0.0 (Compared to WSH Panel Mod 1.5.6)
 - CHG: AppendMenuItem no longer accepts MF_POPUP as a flag. Use
        AppendTo instead.
 - CHG: Remove on_tooltip_custom_paint() callback. window.CreateTooltip has been
-       updated to accept custom font paramters. See below and interfaces.txt.
+       updated to accept custom font paramters. See below and docs\interfaces.txt.
 - CHG: "Properties" dialog has a larger default size.
 - CHG: "Safe mode" is no longer an option.
 - CHG: Tidy up samples.

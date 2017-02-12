@@ -1,0 +1,140 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "windows.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDC_FOOCDTECT MENUEX 
+BEGIN
+    POPUP "File",                           	65535, MFT_STRING, MFS_ENABLED
+    BEGIN
+        MENUITEM "Save All\tCtrl + S",          ID_FILE_SAVEALL, MFT_STRING,MFS_ENABLED
+        MENUITEM "Save &Selected",              ID_FILE_SAVESEL, MFT_STRING,MFS_ENABLED
+        MENUITEM "&Automatic save",             ID_FILE_AUTOMATICSAVE, MFT_STRING,MFS_ENABLED
+        MENUITEM MFT_SEPARATOR
+        MENUITEM "Stats\tT",                    ID_FILE_STATS, MFT_STRING,MFS_ENABLED
+        MENUITEM MFT_SEPARATOR
+        MENUITEM "E&xit\tAlt + X",              ID_FILE_EXIT, MFT_STRING,MFS_ENABLED
+    END
+    POPUP "Edit",                           	65535,MFT_STRING,MFS_ENABLED
+    BEGIN
+        MENUITEM "Select All\tCtrl + A",        ID_EDIT_SELALL, MFT_STRING,MFS_ENABLED
+        MENUITEM "Invert Selection\tI",         ID_EDIT_INVSEL, MFT_STRING,MFS_ENABLED
+        MENUITEM "Delete selected\tDel",        ID_EDIT_DELSEL, MFT_STRING,MFS_ENABLED
+        MENUITEM MFT_SEPARATOR
+        MENUITEM "Sort  \tS",                   ID_EDIT_SORT, MFT_STRING,MFS_ENABLED
+    END
+    POPUP "Options",                        	65535,MFT_STRING,MFS_ENABLED
+    BEGIN
+        POPUP "Log format",                     65535,MFT_STRING,MFS_ENABLED
+        BEGIN
+            MENUITEM "Simple",                      ID_LOGFORMAT_SIMPLE, MFT_STRING, MFS_ENABLED
+            MENUITEM "Normal",                      ID_LOGFORMAT_NORMAL, MFT_STRING, MFS_ENABLED
+            MENUITEM "Verbose",                     ID_LOGFORMAT_VERBOSE, MFT_STRING, MFS_ENABLED
+        END
+        POPUP "Log encoding",                   65535,MFT_STRING,MFS_ENABLED
+        BEGIN
+            MENUITEM "ANSI",                        ID_LOGENCODING_ANSI, MFT_STRING,MFS_ENABLED
+            MENUITEM "UTF16 LE",                    ID_LOGENCODING_UCS2, MFT_STRING,MFS_ENABLED
+            MENUITEM "UTF-8",                       ID_LOGENCODING_UTF8, MFT_STRING,MFS_ENABLED
+        END
+        MENUITEM "Auto delete",                 ID_OPTIONS_AUTODEL, MFT_STRING,MFS_ENABLED
+    END
+    POPUP "Help",                           65535, MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
+    BEGIN
+        MENUITEM "&About",                      ID_HELP_ABOUT, MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR ACCELERATORS 
+BEGIN
+    VK_DELETE,      ID_EDIT_DELSEL,		VIRTKEY, NOINVERT
+    "I",            ID_EDIT_INVSEL,		VIRTKEY, NOINVERT
+    "A",            ID_EDIT_SELALL,		VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_EDIT_SORT,		VIRTKEY, NOINVERT
+    "X",            ID_FILE_EXIT,		VIRTKEY, ALT, NOINVERT
+    "S",            ID_FILE_SAVEALL,	VIRTKEY, CONTROL, NOINVERT
+    "T",            ID_FILE_STATS,		VIRTKEY, NOINVERT
+END
+
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

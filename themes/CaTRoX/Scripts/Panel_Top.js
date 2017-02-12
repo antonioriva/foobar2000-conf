@@ -265,7 +265,7 @@ function createButtonObjects(ww, wh) {
 
     //---> Playback buttons
     var add = 0;
-    buttonCount = 4;
+    buttonCount = 5;
     if (showRandomButton) buttonCount++;
     if (showOpenExplorerButton) buttonCount++;
 
@@ -286,11 +286,12 @@ function createButtonObjects(ww, wh) {
     b[1] = new Button(x + w + p, y, w, h, "Previous", btnImg.Previous);
     b[2] = new Button(x + (w + p) * ++buttonCount, y, w, h, "Play/Pause", (fb.IsPlaying ? (fb.IsPaused ? btnImg.Play : btnImg.Pause) : btnImg.Play));
     b[3] = new Button(x + (w + p) * ++buttonCount, y, w, h, "Next", btnImg.Next);
+    b[4] = new Button(x + (w + p) * ++buttonCount, y, w, h, "Play Playlist", btnImg.PlaylistPlay);
     if (showRandomButton) {
-        b[4] = new Button(x + (w + p) * ++buttonCount, y, w, h, "Playback/Random", btnImg.PlaybackRandom);
+        b[5] = new Button(x + (w + p) * ++buttonCount, y, w, h, "Playback/Random", btnImg.PlaybackRandom);
     }
     if (showOpenExplorerButton) {
-        b[5] = new Button(x + (w + p) * ++buttonCount, y, w, h, "OpenExplorer", btnImg.OpenExplorer);
+        b[6] = new Button(x + (w + p) * ++buttonCount, y, w, h, "OpenExplorer", btnImg.OpenExplorer);
     }
     buttonsRight = x + (w + p) * buttonCount + w;
 
@@ -374,6 +375,13 @@ function createButtonImages() {
         },
         Play: {
             ico: Guifx.Play,
+            font: fontGuifx,
+            id: "playback",
+            w: btw,
+            h: btw
+        },
+        PlaylistPlay: {
+            ico: Guifx.Plus,
             font: fontGuifx,
             id: "playback",
             w: btw,

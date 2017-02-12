@@ -1,3 +1,5 @@
+#This file is used for text auto-completion in the Configuration window
+
 fb.AcquireUiSelectionHolder()
 fb.AddDirectory()
 fb.AddFiles()
@@ -47,11 +49,11 @@ fb.ShowPreferences()
 fb.Stop()
 fb.StopAfterCurrent
 fb.TitleFormat(expression)
+fb.Trace(...)
 fb.Volume
 fb.VolumeDown()
 fb.VolumeMute()
 fb.VolumeUp()
-fb.trace(...)
 
 gdi.CreateImage(w, h)
 gdi.CreateStyleTextRender([pngmode])
@@ -85,6 +87,7 @@ plman.InsertPlaylistItemsFilter(playlistIndex, base, handles[, select])
 plman.IsAutoPlaylist(playlistIndex)
 plman.IsPlaybackQueueActive()
 plman.IsPlaylistItemSelected(playlistIndex, itemIndex)
+plman.IsPlaylistLocked(playlistIndex)
 plman.MovePlaylist(from, to)
 plman.MovePlaylistSelection(playlistIndex, delta)
 plman.PlaybackOrder
@@ -122,6 +125,7 @@ utils.MapString(text, lcid, flags)
 utils.PathWildcardMatch(pattern, str)
 utils.ReadINI(filename, section, key[, defaultval])
 utils.ReadTextFile(filename[, codepage])
+utils.Version
 utils.WriteINI(filename, section, key, val)
 
 window.ClearInterval(timerID)
