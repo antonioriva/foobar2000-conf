@@ -168,6 +168,22 @@ Button.prototype.onClick = function () {
         plman.PlayingPlaylist = plIdx ;
         fb.Play();
         break;
+    case "Append to current Playlist":
+        var handle = fb.GetSelections() ;
+        var plIdx = -1 ;
+        for (var i=0; i<plman.PlaylistCount; i++) {
+            if ( plman.GetPlaylistName(i) == "Play Selection") {
+                plIdx = i ;
+                plman.ActivePlaylist = plIdx ;
+            }
+        }
+        if ( plIdx<0) {
+            plIdx = plman.CreatePlaylist(plman.PlaylistCount, "Play Selection") 
+        }
+        
+        plman.ActivePlaylist = plIdx ;
+        plman.InsertPlaylistItems(plIdx, plman.PlaylistItemCount(plIdx), handle) ;
+        break;
     case "Next":
         fb.Next();
         break;
