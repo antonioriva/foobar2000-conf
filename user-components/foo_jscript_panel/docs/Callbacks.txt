@@ -34,7 +34,7 @@ function on_item_focus_change(playlistIndex, from, to) {}
 // called when playlist focus has been changed
 
 function on_item_played(handle) {}
-// called when at least 60s of the track has been played or the track has reached 
+// called when at least 60s of the track has been played or the track has reached
 // its end after at least 1/3 of it has been played through.
 
 function on_key_down(vkey) {}
@@ -55,6 +55,29 @@ function on_library_items_changed() {}
 
 function on_load_image_done(cookie, image) {}
 // called when thread created by gdi.LoadImageAsync() is done.
+
+function on_main_menu(index) {}
+/*
+On the main menu>File>JScript Panel, there are 10 menu items and whichever number
+is selected is sent as the "index" to this callback. Being main menu items now means you
+can bind them to global keyboard shortcuts, standard toolbar buttons, panel stack splitter
+buttons, etc. Remember to think carefully about where you use this code as you probably only
+want it to run once and so don't include it in common files and scripts where you might have
+multiple instances. Also, you should avoid sharing scripts containing this code so as not
+to conflict with what other users may already be using.
+Example:
+
+function on_main_menu(index) {
+	switch (index) {
+	case 1: // triggered when File>Jscript Panel>1 is run
+		do_something();
+		break;
+	case 2: // triggered when File>Jscript Panel>2 is run
+		do_something_else();
+		break;
+	}
+}
+*/
 
 function on_metadb_changed(handle_list, fromhook) {}
 // called when metadb contents change.
@@ -133,21 +156,22 @@ function on_playback_starting(cmd, is_paused) {}
 function on_playback_stop(reason) {}
 // reason: 0 user, 1 eof, 2 starting_another.
 
-function on_playlist_stop_after_current_changed(state) {}
-// called when "stop after current" is enabled/disabled.
-// state: "stop after current" value, either true or false.
-
 function on_playback_time(time) {}
 // called every second, for time display.
 // time - float value, in sec.
 
-function on_playlist_items_added(playlistIndex) {}
 function on_playlist_item_ensure_visible(playlistIndex, item) {}
+
+function on_playlist_items_added(playlistIndex) {}
 function on_playlist_items_removed(playlistIndex, new_count) {}
 function on_playlist_items_reordered(playlistIndex) {}
 
 function on_playlist_items_selection_change() {}
 // workaround for some 3rd party playlist viewers not working with on_selection_changed()
+
+function on_playlist_stop_after_current_changed(state) {}
+// called when "stop after current" is enabled/disabled.
+// state: "stop after current" value, either true or false.
 
 function on_playlist_switch() {}
 
@@ -165,13 +189,8 @@ function on_refresh_background_done() {}
 function on_script_unload() {}
 // This callback is not guaranteed to be called during unloading.
 
-function on_selection_changed(handle) {}
-/*
-called when selection changes based on "File>Preferences>Display>Selection viewers".
-handle may be undefined depending on which playlist viewer was used to update selection.
-if you need the handle, consider using something like this inside the callback:
-var handle = fb.GetSelection();
-*/
+function on_selection_changed() {}
+// called when selection changes based on "File>Preferences>Display>Selection viewers".
 
 function on_size() {}
 // called when panel is resized.

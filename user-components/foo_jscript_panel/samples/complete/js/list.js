@@ -3,8 +3,8 @@ _.mixin({
 		this.size = function () {
 			this.index = 0;
 			this.offset = 0;
-			this.rows = _.floor((this.h - 32) / panel.row_height);
-			this.up_btn.x = this.x + _.round((this.w - 16) / 2);
+			this.rows = Math.floor((this.h - 32) / panel.row_height);
+			this.up_btn.x = this.x + Math.round((this.w - 16) / 2);
 			this.down_btn.x = this.up_btn.x;
 			this.up_btn.y = this.y;
 			this.down_btn.y = this.y + this.h - 16;
@@ -34,12 +34,12 @@ _.mixin({
 					break;
 				case 1:
 					this.text_x = this.spacer_w + 5;
-					this.text_width = _.round(this.w / 2) + 30;
+					this.text_width = Math.round(this.w / 2) + 30;
 					var lastfm_charts_bar_x = this.x + this.text_x + this.text_width + 10;
 					var unit_width = (this.w - lastfm_charts_bar_x - 40) / this.data[0].playcount;
 					var bar_colour = _.splitRGB(this.lastfm_charts_colour);
 					for (var i = 0; i < Math.min(this.items, this.rows); i++) {
-						var bar_width = _.ceil(unit_width * this.data[i + this.offset].playcount);
+						var bar_width = Math.ceil(unit_width * this.data[i + this.offset].playcount);
 						gr.GdiDrawText(this.data[i + this.offset].rank + ".", panel.fonts.normal, panel.colours.highlight, this.x, this.y + 16 + (i * panel.row_height), this.text_x - 5, panel.row_height, RIGHT);
 						gr.GdiDrawText(this.data[i + this.offset].name, panel.fonts.normal, panel.colours.text, this.x + this.text_x, this.y + 16 + (i * panel.row_height), this.text_width, panel.row_height, LEFT);
 						gr.FillSolidRect(lastfm_charts_bar_x, this.y + 18 + (i * panel.row_height), bar_width, panel.row_height - 3, bar_colour);
@@ -64,7 +64,7 @@ _.mixin({
 					for (var i = 0; i < Math.min(this.items, this.rows); i++) {
 						var y = this.y + 16 + (i * panel.row_height);
 						if (this.mb_icons)
-							_.drawImage(gr, this.mb_images[this.data[i + this.offset].image], this.x, y + _.round((panel.row_height - 16) / 2), 16, 16);
+							_.drawImage(gr, this.mb_images[this.data[i + this.offset].image], this.x, y + Math.round((panel.row_height - 16) / 2), 16, 16);
 						gr.GdiDrawText(this.data[i + this.offset].name, panel.fonts.normal, panel.colours.text, this.x + this.text_x, y, this.text_width, panel.row_height, LEFT);
 					}
 					break;
@@ -147,53 +147,51 @@ _.mixin({
 		this.move = function (x, y) {
 			this.mx = x;
 			this.my = y;
-			this.index = _.floor((y - this.y - 16) / panel.row_height) + this.offset;
-			this.in_range = this.index >= this.offset && this.index < this.offset + Math.min(this.rows, this.items);
-			switch (true) {
-			case !this.trace(x, y):
-			case this.mode == "autoplaylists" && this.editing:
-				window.SetCursor(IDC_ARROW);
-				this.leave();
-				return false;
-			case this.up_btn.move(x, y):
-			case this.down_btn.move(x, y):
-				break;
-			case !this.in_range:
-				window.SetCursor(IDC_ARROW);
-				this.leave();
-				break;
-			case this.mode == "autoplaylists":
+			window.SetCursor(IDC_ARROW);
+			if (this.trace(x, y)) {
+				this.index = Math.floor((y - this.y - 16) / panel.row_height) + this.offset;
+				this.in_range = this.index >= this.offset && this.index < this.offset + Math.min(this.rows, this.items);
 				switch (true) {
-				case x > this.x && x < this.x + Math.min(this.data[this.index].width, this.text_width):
-					window.SetCursor(IDC_HAND);
-					_.tt("Autoplaylist: " + this.data[this.index].name);
+				case this.up_btn.move(x, y):
+				case this.down_btn.move(x, y):
 					break;
-				case x > this.x + this.w - 20 && x < this.x + this.w:
-					window.SetCursor(IDC_HAND);
-					_.tt("Edit " + _.q(this.data[this.index].name));
-					break;
-				default:
-					window.SetCursor(IDC_ARROW);
-					_.tt("");
+				case this.mode == "autoplaylists" && this.editing:
+				case !this.in_range:
 					this.leave();
 					break;
+				case this.mode == "autoplaylists":
+					switch (true) {
+					case x > this.x && x < this.x + Math.min(this.data[this.index].width, this.text_width):
+						window.SetCursor(IDC_HAND);
+						_.tt("Autoplaylist: " + this.data[this.index].name);
+						break;
+					case x > this.x + this.w - 20 && x < this.x + this.w:
+						window.SetCursor(IDC_HAND);
+						_.tt("Edit " + _.q(this.data[this.index].name));
+						break;
+					default:
+						_.tt("");
+						this.leave();
+						break;
+					}
+					this.hover = true;
+					window.RepaintRect(this.x + this.w - 20, this.y, 20, this.h);
+					break;
+				case x > this.x + this.text_x && x < this.x + this.text_x + Math.min(this.data[this.index].width, this.text_width):
+					window.SetCursor(IDC_HAND);
+					if (this.data[this.index].url.indexOf("http") == 0)
+						_.tt(this.data[this.index].url);
+					else
+						_.tt("Autoplaylist: " + this.data[this.index].url);
+					break;
+				default:
+					_.tt("");
+					break;
 				}
-				this.hover = true;
-				window.RepaintRect(this.x + this.w - 20, this.y, 20, this.h);
-				break;
-			case x > this.x + this.text_x && x < this.x + this.text_x + Math.min(this.data[this.index].width, this.text_width):
-				window.SetCursor(IDC_HAND);
-				if (this.data[this.index].url.indexOf("http") == 0)
-					_.tt(this.data[this.index].url);
-				else
-					_.tt("Autoplaylist: " + this.data[this.index].url);
-				break;
-			default:
-				window.SetCursor(IDC_ARROW);
-				_.tt("");
-				break;
+				return true;
+			} else {
+				return false;
 			}
-			return true;
 		}
 		
 		this.leave = function () {
@@ -204,34 +202,32 @@ _.mixin({
 		}
 		
 		this.lbtn_up = function (x, y) {
-			switch (true) {
-			case !this.trace(x, y):
-				return false;
-			case this.mode == "autoplaylists" && this.editing:
-			case this.up_btn.lbtn_up(x, y):
-			case this.down_btn.lbtn_up(x, y):
-			case !this.in_range:
-				break;
-			case this.mode == "autoplaylists":
+			if (this.trace(x, y)) {
 				switch (true) {
-				case x > this.x && x < this.x + Math.min(this.data[this.index].width, this.text_width):
-					this.run_query(this.data[this.index].name, this.data[this.index].query, this.data[this.index].sort, this.data[this.index].forced);
+				case this.up_btn.lbtn_up(x, y):
+				case this.down_btn.lbtn_up(x, y):
+				case this.mode == "autoplaylists" && this.editing:
+				case !this.in_range:
 					break;
-				case x > this.x + this.w - 20 && x < this.x + this.w:
-					this.edit(x, y);
+				case this.mode == "autoplaylists":
+					if (this.x && x < this.x + Math.min(this.data[this.index].width, this.text_width))
+						this.run_query(this.data[this.index].name, this.data[this.index].query, this.data[this.index].sort, this.data[this.index].forced);
+					else if (x > this.x + this.w - 20 && x < this.x + this.w)
+						this.edit(x, y);
+					break;
+				case x > this.x + this.text_x && x < this.x + this.text_x + Math.min(this.data[this.index].width, this.text_width):
+					if (this.data[this.index].url.indexOf("http") == 0) {
+						_.run(this.data[this.index].url);
+					} else {
+						plman.CreateAutoPlaylist(plman.PlaylistCount, this.data[this.index].name, this.data[this.index].url);
+						plman.ActivePlaylist = plman.PlaylistCount - 1;
+					}
 					break;
 				}
-				break;
-			case x > this.x + this.text_x && x < this.x + this.text_x + Math.min(this.data[this.index].width, this.text_width):
-				if (this.data[this.index].url.indexOf("http") == 0) {
-					_.browser(this.data[this.index].url);
-				} else {
-					plman.CreateAutoPlaylist(plman.PlaylistCount, this.data[this.index].name, this.data[this.index].url);
-					plman.ActivePlaylist = plman.PlaylistCount - 1;
-				}
-				break;
+				return true;
+			} else {
+				return false;
 			}
-			return true;
 		}
 		
 		this.rbtn_up = function (x, y) {
@@ -426,11 +422,12 @@ _.mixin({
 			this.spacer_w = _.textWidth("0000", panel.fonts.normal);
 			switch (this.mode) {
 			case "autoplaylists":
-				this.data = _(_.jsonParse(_.open(this.filename)))
-					.forEach(function (item) {
-						item.width = _.textWidth(item.name, panel.fonts.normal);
-					})
-					.value();
+				if (_.isFile(this.filename))
+					this.data = _(_.jsonParse(_.open(this.filename)))
+						.forEach(function (item) {
+							item.width = _.textWidth(item.name, panel.fonts.normal);
+						})
+						.value();
 				break;
 			case "lastfm_info":
 				this.filename = "";
@@ -609,9 +606,6 @@ _.mixin({
 					switch (true) {
 					case this.xmlhttp.status == 200:
 						this.success(f);
-						break;
-					case this.xmlhttp.status == 404 && this.mode == "lastfm_info" && this.lastfm_mode == 1:
-						console.log("Username not found.");
 						break;
 					case this.xmlhttp.status == 503 && this.mode == "musicbrainz" && this.attempt < 5:
 						window.SetTimeout(this.mb_retry, 1500);
@@ -967,15 +961,17 @@ _.mixin({
 						value : duration + " (" + samples + " samples)",
 						url : "%length% IS " + duration
 					});
+					var tmp = [];
 					for (var i = 0; i < f.InfoCount; i++) {
 						var name = f.InfoName(i);
 						var value = f.InfoValue(i);
-						this.data.push({
+						tmp.push({
 							name : name.toUpperCase(),
 							value : value,
 							url : "%__" + name.toLowerCase() + "% IS " + value
 						});
 					}
+					this.data.push.apply(this.data, _.sortByOrder(tmp, "name"));
 					this.add();
 				}
 				

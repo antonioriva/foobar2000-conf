@@ -9,9 +9,9 @@ _.mixin({
 					var ratio = Math.min(this.w / this.case_img.Width, this.h / this.case_img.Height);
 					var nw = 488 * ratio;
 					var nh = 476 * ratio;
-					var nx = this.x + _.floor((this.w - (452 * ratio)) / 2);
-					var ny = this.y + _.floor((this.h - nh) / 2);
-					_.drawImage(gr, this.img, nx, ny, nw, nh, image.crop_top);
+					var nx = this.x + Math.floor((this.w - (452 * ratio)) / 2);
+					var ny = this.y + Math.floor((this.h - nh) / 2);
+					_.drawImage(gr, this.img, nx, ny, nw, nh, this.aspect);
 				}
 				_.drawImage(gr, this.semi_img, this.x, this.y, this.w, this.h);
 				if (this.gloss)
@@ -34,9 +34,9 @@ _.mixin({
 		
 		this.get_album_art_done = function (p) {
 			this.path = p;
-			if (this.img && panel.metadb && _.isFile(this.path)) {
+			if (this.img && _.isFile(this.path)) {
 				this.tooltip = "Original dimensions: " + this.img.Width + "x" + this.img.Height + "px\nPath: " + this.path;
-				if (this.path != panel.metadb.Path)
+				if (panel.metadb && panel.metadb.Path != this.path)
 					this.tooltip += "\nSize: " + utils.FormatFileSize(fso.GetFile(this.path).Size);
 			}
 		}
@@ -78,17 +78,15 @@ _.mixin({
 		}
 		
 		this.lbtn_dblclk = function (x, y) {
-			switch (true) {
-			case !this.trace(x, y):
+			if (this.trace(x, y)) {
+				if (panel.metadb && panel.metadb.Path == this.path)
+					_.explorer(this.path);
+				else if (_.isFile(this.path))
+					_.run(this.path);
+				return true;
+			} else {
 				return false;
-			case panel.metadb && this.path == panel.metadb.Path:
-				_.explorer(this.path);
-				break;
-			case _.isFile(this.path):
-				_.run(this.path);
-				break;
 			}
-			return true;
 		}
 		
 		this.rbtn_up = function (x, y) {
@@ -106,14 +104,12 @@ _.mixin({
 			});
 			panel.m.CheckMenuRadioItem(2010, 2014, this.id + 2010);
 			panel.m.AppendMenuSeparator();
-			if (!this.cd) {
-				panel.m.AppendMenuItem(MF_STRING, 2020, "Crop (focus on centre)");
-				panel.m.AppendMenuItem(MF_STRING, 2021, "Crop (focus on top)");
-				panel.m.AppendMenuItem(MF_STRING, 2022, "Stretch");
-				panel.m.AppendMenuItem(MF_STRING, 2023, "Centre");
-				panel.m.CheckMenuRadioItem(2020, 2023, this.aspect + 2020);
-				panel.m.AppendMenuSeparator();
-			}
+			panel.m.AppendMenuItem(MF_STRING, 2020, "Crop (focus on centre)");
+			panel.m.AppendMenuItem(MF_STRING, 2021, "Crop (focus on top)");
+			panel.m.AppendMenuItem(MF_STRING, 2022, "Stretch");
+			panel.m.AppendMenuItem(MF_STRING, 2023, "Centre");
+			panel.m.CheckMenuRadioItem(2020, 2023, this.aspect + 2020);
+			panel.m.AppendMenuSeparator();
 			panel.m.AppendMenuItem(_.isFile(this.path) ? MF_STRING : MF_GRAYED, 2030, "Open containing folder");
 			panel.m.AppendMenuSeparator();
 			panel.m.AppendMenuItem(panel.metadb ? MF_STRING : MF_GRAYED, 2040, "Google image search");
@@ -161,7 +157,7 @@ _.mixin({
 				_.explorer(this.path);
 				break;
 			case 2040:
-				_.browser("https://www.google.co.uk/search?tbm=isch&q=" + encodeURIComponent(panel.tf("%album artist%[ %album%]")));
+				_.run("https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(panel.tf("%album artist%[ %album%]")));
 				break;
 			}
 		}

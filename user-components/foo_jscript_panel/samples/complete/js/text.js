@@ -1,8 +1,8 @@
 _.mixin({
 	text : function (mode, x, y, w, h) {
 		this.size = function () {
-			this.rows = _.floor((this.h - 32) / panel.row_height);
-			this.up_btn.x = this.x + _.round((this.w - 16) / 2);
+			this.rows = Math.floor((this.h - 32) / panel.row_height);
+			this.up_btn.x = this.x + Math.round((this.w - 16) / 2);
 			this.down_btn.x = this.up_btn.x;
 			this.up_btn.y = this.y;
 			this.down_btn.y = this.y + this.h - 16;
@@ -11,7 +11,10 @@ _.mixin({
 		
 		this.paint = function (gr) {
 			for (var i = 0; i < Math.min(this.rows, this.lines.length); i++) {
-				gr.GdiDrawText(this.lines[i + this.offset], this.fixed ? panel.fonts.fixed : panel.fonts.normal, panel.colours.text, this.x, (this.fixed ? _.floor(panel.row_height / 2) : 0) + 16 + this.y + (i * panel.row_height), this.w, panel.row_height, LEFT);
+				if (this.fixed)
+					gr.GdiDrawText(this.lines[i + this.offset], panel.fonts.fixed, panel.colours.text, this.x, Math.floor(panel.row_height / 2) + 16 + this.y + (i * panel.row_height), this.w, panel.row_height, LEFT);
+				else
+					gr.GdiDrawText(this.lines[i + this.offset], panel.fonts.normal, panel.colours.text, this.x, 16 + this.y + (i * panel.row_height), this.w, panel.row_height, LEFT);
 			}
 			this.up_btn.paint(gr, panel.colours.text);
 			this.down_btn.paint(gr, panel.colours.text);
@@ -23,11 +26,9 @@ _.mixin({
 				if (this.filename == temp_filename)
 					return;
 				this.filename = temp_filename;
-				this.content = "";
 				if (_.isFolder(this.filename)) { // yes really!
-					var folder = this.filename + "\\";
-					this.content = _.open(_.getFiles(folder, this.exts)[0]);
-				} else if (_.isFile(this.filename)) {
+					this.content = _.open(_.first(_.getFiles(this.filename, this.exts)));
+				} else {
 					this.content = _.open(this.filename);
 				}
 				this.content = this.content.replace(/\t/g, "    ");
@@ -65,18 +66,14 @@ _.mixin({
 		this.move = function (x, y) {
 			this.mx = x;
 			this.my = y;
-			switch (true) {
-			case !this.trace(x, y):
-				window.SetCursor(IDC_ARROW);
+			window.SetCursor(IDC_ARROW);
+			if (this.trace(x, y)) {
+				this.up_btn.move(x, y);
+				this.down_btn.move(x, y);
+				return true;
+			} else {
 				return false;
-			case this.up_btn.move(x, y):
-			case this.down_btn.move(x, y):
-				break;
-			default:
-				window.SetCursor(IDC_ARROW);
-				break;
 			}
-			return true;
 		}
 		
 		this.lbtn_up = function (x, y) {
