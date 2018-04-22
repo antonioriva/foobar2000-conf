@@ -3,64 +3,77 @@
   <head>
     <meta  charset="UTF-8" />
     <title>SQLite Viewer - Custom SQL functions</title>
+    <style type="text/css">
+      table {
+        border: 1px dotted #C0C0C0;
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+      }
+
+      table td {
+        border: 1px dotted #C0C0C0;
+        padding: 2px;
+        vertical-align: top;
+      }
+
+      table th {
+        background-color: #CCCCCC;
+        text-align: left;
+      }
+    </style>
   </head>
   <body>
     <h4  style="text-decoration: underline;">SQLite Viewer - Custom SQL
       functions</h4>
     All functions return NULL, if any argument is NULL.<br />
     <br />
-    <span  style="text-decoration: underline;">General functions</span><br />
+    <span style="text-decoration: underline;">General functions</span><br />
     <br />
-    <table  border="0"  style="width: 100%;">
+    <table>
+      <tr>
+        <th>Function</th>
+        <th>Parameters</th>
+        <th>Description</th>
+      </tr>
       <tbody>
         <tr>
-          <td><span  style="font-weight: bold;">active_playlist()</span><br />
-          </td>
-          <td>Returns the index of the active playlist<br />
+          <td width="30%">active_playlist</td>
+          <td width="30%">&nbsp;</td>
+          <td>Returns the index of the active playlist
           </td>
         </tr>
         <tr>
-          <td><span  style="font-weight: bold;">file_exists('path')</span><br />
-          </td>
+          <td>file_exists</td>
+          <td>&#39;&lt;path&gt;&#39;</td>
           <td>Returns 1, if &lt;path&gt; exists, 0 otherwise unless &lt;path&gt;
             is NULL. <br />
           </td>
         </tr>
         <tr>
-          <td  style="vertical-align: top;"><span  style="font-weight: bold;">format_length(&lt;length
-
-
-              in seconds&gt;)</span><br />
-          </td>
-          <td  style="vertical-align: top;">Formats the specified length as
-            weeks, days, hours, minutes and seconds<br />
+          <td>format_length</td>
+          <td>&lt;length in seconds&gt;</td>
+          <td>Formats the specified length as weeks, days, hours, minutes and seconds<br />
           </td>
         </tr>
         <tr>
-          <td  style="vertical-align: top; font-weight: bold;">format_length_hours(&lt;length
-
-
-            in seconds&gt;)</td>
-          <td  style="vertical-align: top;">Formats the specified length as
-            hours, minutes and seconds</td>
+          <td>format_length_hours</td>
+          <td>&lt;length in seconds&gt;</td>
+          <td>Formats the specified length as hours, minutes and seconds</td>
         </tr>
         <tr>
-          <td  style="vertical-align: top;"><span  style="font-weight: bold;">strpos('&lt;string&gt;',
-
-
-              '&lt;search&gt;')</span></td>
-          <td  style="vertical-align: top;">Search &lt;search&gt; in
+          <td>strpos</td>
+          <td>&#39;&lt;string&gt;&#39;, &#39;&lt;search&gt;&#39;</td>
+          <td>Search &lt;search&gt; in
             &lt;string&gt; and return the 1-based position. Returns 0, if
             &lt;search&gt; is not found.<br />
           </td>
         </tr>
         <tr>
-          <td  style="vertical-align: top;"><span  style="font-weight: bold;">padl('&lt;string&gt;',
-
-
-              &lt;length&gt;[, '&lt;filler&gt;'])</span><br />
+          <td>padl
           </td>
-          <td  style="vertical-align: top;">Pads &lt;string&gt; to the length
+          <td>&#39;&lt;string&gt;&#39;, &lt;length&gt; [, &#39;&lt;filler&gt;&#39;]</td>
+          <td>Pads &lt;string&gt; to the length
             &lt;length&gt; with &lt;filler&gt; on the left side. &lt;filler&gt;
             is optional and defaults to ' '. If &lt;filler&gt; contains more
             than one character, &lt;filler&gt; will be added as many times as it
@@ -68,56 +81,175 @@
           </td>
         </tr>
         <tr>
-          <td  style="vertical-align: top;"><span  style="font-weight: bold;">padr('&lt;string&gt;',
-
-
-              &lt;length&gt;[, '&lt;filler&gt;'])</span></td>
-          <td  style="vertical-align: top;">Pads &lt;string&gt; to the length
+          <td>padr</td>
+          <td>&#39;&lt;string&gt;&#39;, &lt;length&gt; [, &#39;&lt;filler&gt;&#39;]</td>
+          <td>Pads &lt;string&gt; to the length
             &lt;length&gt; with &lt;filler&gt; on the right side. &lt;filler&gt;
             is optional and defaults to ' '. If &lt;filler&gt; contains more
             than one character, &lt;filler&gt; will be added as many times as it
             fits without exceeding &lt;length&gt;.</td>
         </tr>
         <tr>
-          <td><span  style="font-weight: bold;">playing_playlist()</span><br />
-          </td>
+          <td>playing_playlist</td>
+          <td>&nbsp;</td>
           <td>Returns the index of the playing playlist<br />
           </td>
         </tr>
         <tr>
-          <td  style="font-weight: bold;">tf_focus_item(&lt;playlist
-            index&gt;,'&lt;title format expression&gt;')<br />
+          <td>regexp</td>
+          <td>&#39;&lt;regular expression&gt;&#39;, &#39;&lt;string&gt;&#39;</td>
+          <td>Returns 1, if &lt;string&gt; matches &lt;regular expression&gt; and 0 otherwise. This function also implements the SQLite REGEXP operator. The supported regular expression syntax is described <a href="http://www.boost.org/doc/libs/1_64_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html">here</a>.</td>
+        </tr>
+        <tr>
+          <td>regexp_replace</td>
+          <td>&#39;&lt;regular expression&gt;&#39;, &#39;&lt;format&gt;&#39;, &#39;&lt;string&gt;&#39; [,&lt;flag=0&gt;]</td>
+          <td>Returns the parts of &lt;string&gt;, that don't match &lt;regular expression&gt; unchanged and replace the matched parts by &lt;format&gt;. If flag=1 the unmatched parts will be dropped. The supported formats are described <a href="http://www.boost.org/doc/libs/1_64_0/libs/regex/doc/html/boost_regex/format/perl_format.html">here</a>.</td>
+        </tr>
+        <tr>
+          <td>regexp_replace_first</td>
+          <td>&#39;&lt;regular expression&gt;&#39;, &#39;&lt;format&gt;&#39;, &#39;&lt;string&gt;&#39; [,&lt;flag=0&gt;]</td>
+          <td>Works like regexp_replace, but only replaces the first found match.</td>
+        </tr>
+        <tr>
+          <td>regexp_search</td>
+          <td>&#39;&lt;regular expression&gt;&#39;, &#39;&lt;string&gt;&#39;</td>
+          <td>Returns 1, if a match of &lt;regular expression&gt; inside of &lt;string&gt; is found and 0 otherwise.</td>
+        </tr>
+        <tr>
+          <td>strsortgroup</td>
+          <td>&#39;&lt;string&gt;&#39;, &#39;&lt;delimiter&gt;&#39;</td>
+          <td>Sorts the groups inside &lt;string&gt; which are separated by &lt;delimiter&gt;.</td>
+        </tr>
+        <tr>
+          <td>tf_focus_item<br />
           </td>
+          <td>&lt;playlist index&gt;, &#39;&lt;title format expression&gt;&#39;</td>
           <td>Evaluates &lt;title format expression&gt; for the item which has
             the focus in the playlist with the index &lt;playlist index&gt;<br />
           </td>
         </tr>
         <tr>
-          <td  style="font-weight: bold;">tf_focus_item_pn('&lt;playlist
-            name&gt;,'&lt;title format expression&gt;')</td>
+          <td>tf_focus_item_pn</td>
+          <td>&#39;&lt;playlist name&gt;, &#39;&lt;title format expression&gt;&#39;</td>
           <td>Evaluates &lt;title format expression&gt; for the item which has
             the focus in the playlist with the name &lt;playlist name&gt;</td>
         </tr>
         <tr>
-          <td  style="font-weight: bold;">tf_playing_item('&lt;title format
-            expression&gt;')<br />
+          <td>tf_playing_item<br />
           </td>
+          <td>&#39;&lt;title format expression&gt;&#39;</td>
           <td>Evaluates &lt;title format expression&gt; for the item which is
             the currently playing item<br />
           </td>
         </tr>
       </tbody>
     </table>
-    <p> Additionally the following extension functions provided <a  href="http://www.sqlite.org/contrib">here</a>
-      are implemented:<br />
-      <br />
-      Math: acos, asin, atan, atn2, atan2, acosh, asinh, atanh, difference,
-      degrees, radians, cos, sin, tan, cot, cosh, sinh, tanh, coth, exp, log,
-      log10, power, sign, sqrt, square, ceil, floor, pi.<br />
-      String: replicate, charindex, leftstr, rightstr, reverse, proper, padc,
-      strfilter.<br />
-      Aggregate: stdev, variance, mode, median, lower_quartile, upper_quartile </p>
-      <br />
+    <br />
+    <span style="text-decoration: underline;">Auto loaded modules</span><br />
+    <br />
+    The following modules are provided and auto-loaded.<br />
+    <br />
+    <table>
+      <tr>
+        <th>Module</th>
+        <th>Description</th>
+        <th colspan="2">Functions / Virtual tables</th>
+        <th>Reference</th>
+      </tr>
+      <tr>
+        <td>csv</td>
+        <td>Provides a virtual table for reading csv files</td>
+        <td colspan="2">
+          <pre>CREATE VIRTUAL TABLE temp.csv USING csv(filename=FILENAME); SELECT * FROM csv;</pre>
+        </td>
+        <td><a href="https://www.sqlite.org/src/raw/ext/misc/csv.c?name=531a46cbad789fca0aa9db69a0e6c8ac9e68767d">SQLite sources</a></td>
+      </tr>
+      <tr>
+        <td>damerau_levenshtein</td>
+        <td>Provides a function for getting the damerau-levenshtein distance for two strings</td>
+        <td colspan="2">damerau_levenshtein</td>
+        <td><a href="https://github.com/evsukov89/SQLiteFuzzySearch">Github</a></td>
+      </tr>
+      <tr>
+        <td>eval</td>
+        <td>Provides the function eval to run SQL statements provided by a string</td>
+        <td colspan="2">eval</td>
+        <td><a href="https://www.sqlite.org/src/raw/ext/misc/eval.c?name=f971962e92ebb8b0a4e6b62949463ee454d88fa2">SQLite sources</a></td>
+      </tr>
+      <tr>
+        <td rowspan="3">extension_functions</td>
+        <td rowspan="3">Several&nbsp; functions for various purposes</td>
+        <td>Scalar (math)</td>
+        <td>acos, asin, atan, atn2, atan2, acosh, asinh, atanh, difference, degrees, radians, cos, sin, tan, cot, cosh, sinh, tanh, coth, exp, log, log10, power, sign, sqrt, square, ceil, floor, pi</td>
+        <td rowspan="3"><a href="http://www.sqlite.org/contrib/download/extension-functions.c?get=25">SQLite contributions</a></td>
+      </tr>
+      <tr>
+        <td>Scalar (string)</td>
+        <td>replicate, charindex, leftstr, rightstr, reverse, proper, padc, strfilter</td>
+      </tr>
+      <tr>
+        <td>Aggregate</td>
+        <td>stdev, variance, mode, median, lower_quartile, upper_quartile</td>
+      </tr>
+      <tr>
+        <td>fileio</td>
+        <td>Provides the possibility to read and write files</td>
+        <td colspan="2">readfile, writefile</td>
+        <td><a href="https://www.sqlite.org/src/raw/ext/misc/fileio.c?name=d4171c815d6543a9edef8308aab2951413cd8d0f">SQLite sources</a></td>
+      </tr>
+      <tr>
+        <td>levenshtein</td>
+        <td>Provides a function for getting the levenshtein discance between two strings</td>
+        <td colspan="2">levenshtein</td>
+        <td><a href="https://github.com/evsukov89/SQLiteFuzzySearch">Github</a></td>
+      </tr>
+      <tr>
+        <td rowspan="2">md5</td>
+        <td rowspan="2">Provides functions for handling md5 hashes</td>
+        <td>Scalar</td>
+        <td>md5, md5file</td>
+        <td rowspan="2"><a href="https://github.com/moisseev/sqlite-md5">Github</a></td>
+      </tr>
+      <tr>
+        <td>Aggregate</td>
+        <td>group_md5</td>
+      </tr>
+      <tr>
+        <td>metaphone</td>
+        <td>Provides a function to get the metaphone value of a string</td>
+        <td colspan="2">metaphone</td>
+        <td><a href="https://github.com/evsukov89/SQLiteFuzzySearch">Github</a></td>
+      </tr>
+      <tr>
+        <td>series</td>
+        <td>Provides the virtual table generate_series to generate series</td>
+        <td colspan="2">
+          <pre>SELECT * FROM generate_series(0,100);</pre>
+        </td>
+        <td><a href="https://www.sqlite.org/src/raw/ext/misc/series.c?name=e11e534ada797d5b816d7e7a93c022306563ca35">SQLite sources</a></td>
+      </tr>
+      <tr>
+        <td>totype</td>
+        <td>Provides type conversion functions</td>
+        <td colspan="2">tointeger, toreal</td>
+        <td><a href="https://www.sqlite.org/src/raw/ext/misc/totype.c?name=4a167594e791abeed95e0a8db028822b5e8fe512">SQLite sources</a></td>
+      </tr>
+      <tr>
+        <td>unicode</td>
+        <td>Provides functions for handling unicode strings</td>
+        <td colspan="2">upper, lower, title,fold, like, unaccent</td>
+        <td><a href="https://github.com/Zensey/sqlite3_unicode">Github</a></td>
+      </tr>
+      <tr>
+        <td>uuid</td>
+        <td>Provides functions for handling uuids</td>
+        <td colspan="2">
+          <pre>uuidgen, uuid, xuuid</pre>
+        </td>
+        <td><a href="https://github.com/ralph-schleicher/sqlite-extension-uuid">Github</a></td>
+      </tr>
+    </table>
+    <br />
     <span  style="text-decoration: underline;">Virtual table functions</span><br />
     <br />
     The virtual table functions are only valid when querying the virtual tables
@@ -126,16 +258,17 @@
     a limitation of SQLite these functions cannot be used in queries containing
     a group-by clause or the distinct attribute. <br />
     <br />
-    <table  border="0"  style="width: 100%;">
+    <table>
+      <tr>
+        <th>Function</th>
+        <th>Parameters</th>
+        <th>Description</th>
+      </tr>
       <tbody>
         <tr>
-          <td  style="width: 250pt;"><span  style="font-weight: bold;">tf(metadb_handle,'&lt;title
-
-
-              format expression&gt;')</span> </td>
-          <td> <span  style="font-weight: bold;"></span>Evaluate &lt;title
-            format expression&gt; and return the result<br />
-          </td>
+          <td>tf</td>
+          <td>metadb_handle, '&lt;title format expression&gt;'</td>
+          <td>Evaluate &lt;title format expression&gt; and return the result</td>
         </tr>
       </tbody>
     </table>

@@ -52,3 +52,8 @@
 /themes/White.fth
 /themes/Yellow.fth
 /index-data
+/runtime
+/doc
+/vcruntime140.dll
+/PP-UWP-Interop.dll
+/msvcp140.dll
